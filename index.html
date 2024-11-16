@@ -112,11 +112,13 @@
 <header>
     <nav>
      
-        <!--<div class="header_links">
+        <div class="header_links">
             <ul class="nav_links">
-                <li class="nav_link"><a href="https://vinoland.net">Home</a></li>
+                <li class="nav_link"><a href="https://lucianland.xyz/downloads.html">Downloads</a></li>
+                <li class="nav_link"><a href="https://lucianland.xyz/qna.html">Q&A</a></li>
+
             </ul>
-        </div> --->
+        </div> 
     </nav>
 </header>
 <section class="main">
@@ -255,7 +257,7 @@
             const logEntries = logContainer.querySelectorAll(".log-entry");
             const entries = [];
             logEntries.forEach(entry => entries.push(entry.textContent));
-            setCookie("logHistory", entries.join('|'), 7);
+            setCookie("logHistory", entries.join('|'), 7);  
         }
 
         function scrollLogToBottom() {

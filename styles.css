@@ -1,0 +1,87 @@
+/* General styling */
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .download-container {
+    width: 400px;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Download item */
+  .download-item {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background-color: #2a2a2a;
+  }
+  
+  .item-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .item-header .icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .item-header .icon.windows {
+    background: url('https://via.placeholder.com/30x30.png?text=W') no-repeat center;
+    background-size: contain;
+  }
+  
+  .item-header .icon.linux {
+    background: url('https://via.placeholder.com/30x30.png?text=L') no-repeat center;
+    background-size: contain;
+  }
+  
+  h2 {
+    font-size: 18px;
+    margin: 0;
+  }
+  
+  p {
+    margin: 5px 0;
+  }
+  
+  p span {
+    color: #00aaff;
+    font-family: monospace;
+  }
+  
+  button.not-available {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: #444;
+    color: #aaa;
+    border: none;
+    border-radius: 5px;
+    cursor: not-allowed;
+  }
+  
+  button.not-available:hover {
+    background-color: #555;
+  }
+  
