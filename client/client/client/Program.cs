@@ -7,6 +7,7 @@ using System.Threading;
 
 class Program
 {
+    // TO DO: add a cool ui, and make it auto install after putting id in lua gen
     // Import necessary Windows API functions
     [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
     private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
