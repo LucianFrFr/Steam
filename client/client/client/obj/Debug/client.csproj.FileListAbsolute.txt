@@ -1,0 +1,15 @@
+J:\Steam\client\client\client\obj\Debug\client.csproj.AssemblyReference.cache
+J:\Steam\client\client\client\obj\Debug\client.csproj.CoreCompileInputs.cache
+J:\Steam\client\Client\client\bin\Debug\client.exe.config
+J:\Steam\client\Client\client\bin\Debug\client.exe
+J:\Steam\client\Client\client\bin\Debug\client.pdb
+J:\Steam\client\Client\client\bin\Debug\MsgPack.dll
+J:\Steam\client\Client\client\bin\Debug\Newtonsoft.Json.dll
+J:\Steam\client\Client\client\bin\Debug\Newtonsoft.Msgpack.dll
+J:\Steam\client\Client\client\bin\Debug\MsgPack.xml
+J:\Steam\client\Client\client\bin\Debug\Newtonsoft.Json.xml
+J:\Steam\client\Client\client\bin\Debug\Newtonsoft.Msgpack.pdb
+J:\Steam\client\Client\client\bin\Debug\Newtonsoft.Msgpack.xml
+J:\Steam\client\Client\client\obj\Debug\client.csproj.Up2Date
+J:\Steam\client\Client\client\obj\Debug\client.exe
+J:\Steam\client\Client\client\obj\Debug\client.pdb
