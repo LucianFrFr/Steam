@@ -55,23 +55,7 @@ private static readonly HttpClient client = new HttpClient();
 
     static async Task LoadSteam()
     {
-        Console.WriteLine("Drag and drop files into this window, remember this is in HUGE development");
-
-        string input = Console.ReadLine();
-
-       if (string.IsNullOrWhiteSpace(input))
-       {
-           Console.WriteLine("No files detected. Returning to the menu.");
-           return;
-       }
-
-      string[] files = input.Split(new[] { '"' }, StringSplitOptions.RemoveEmptyEntries);
-
-      Console.WriteLine("Files detected: INVALID");
-
-      Console.WriteLine("Processing Failed. Most Likely A Steam Issue. Press any key to return to the menu.");
-
-      Console.ReadKey();
+        // who tf think you are for me leaking this 
     }
 
 
