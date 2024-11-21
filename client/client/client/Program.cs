@@ -7,24 +7,10 @@ using System.Threading;
 
 class Program
 {
-    // Import necessary Windows API functions
-    [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
-    private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-
-    [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
-    private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-
-    [DllImport("kernel32.dll", EntryPoint = "GetConsoleWindow")]
-    private static extern IntPtr GetConsoleWindow();
-
-    [DllImport("user32.dll", EntryPoint = "SetLayeredWindowAttributes")]
-    private static extern bool SetLayeredWindowAttributes(IntPtr hWnd, uint crKey, byte bAlpha, uint dwFlags);
-
-    // Constants
-    private const int GWL_EXSTYLE = -20;
-    private const int WS_EX_LAYERED = 0x00080000;
-    private const int LWA_COLORKEY = 0x00000001;
-    private const int LWA_ALPHA = 0x00000002;
+private static readonly HttpClient client = new HttpClient();
+    private const string SiteKey = "6LdOQoUqAAAAAKRCt5axnH1bSAgxLCGZ-RwAnBcz";
+    private const string ReCaptchaUrl = "https://www.google.com/recaptcha/api/siteverify";
+    private const string ApiBaseUrl = "https://vinn-web-tools-dandys-projects-bb4af0ab.vercel.app";
 
    public static string[] woahstrings = { "I JUST SENT A THREAT TO THE WHITE HOUSE!!", "99 PERCENT OF GAMBELERS QUIT RIGHT BEFORE THEY HIT IT BIG?", "Im afread your a pinned paste..", "See my Botnet back there?", "Home Address here chat", "This tool was made by lucian <3", "I LIKE APPLES AND BANNANAS!!" };
 
@@ -32,13 +18,6 @@ class Program
 
     static async Task Main(string[] args)
     {
-        IntPtr hWnd = GetConsoleWindow();
-        int currentStyle = GetWindowLong(hWnd, GWL_EXSTYLE);
-        SetWindowLong(hWnd, GWL_EXSTYLE, currentStyle | WS_EX_LAYERED);
-
-        // (bAlpha: 0 = fully transparent, 255 = fully opaque)
-        byte transparency = 0;  
-        SetLayeredWindowAttributes(hWnd, 0, transparency, LWA_ALPHA);
         Console.WriteLine("Welcome To..");
         Thread.Sleep(1000);
          
@@ -48,6 +27,8 @@ class Program
         Console.WriteLine("██║░░░░░██║░░░██║██║░░██╗██║██╔══██║██║╚████║██║░░░░░██╔══██║██║╚████║██║░░██║");
         Console.WriteLine("███████╗╚██████╔╝╚█████╔╝██║██║░░██║██║░╚███║███████╗██║░░██║██║░╚███║██████╔╝");
         Console.WriteLine("╚══════╝░╚═════╝░░╚════╝░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝╚══════╝╚═╝░░╚═╝╚═╝░░╚══╝╚═════╝░");
+        Console.WriteLine("                        Made with love by lucian <3                           ");
+
         Thread.Sleep(1000);
 
         Console.Clear();
@@ -72,10 +53,27 @@ class Program
         }
     }
 
-    static void LoadSteam()
+    static async Task LoadSteam()
     {
-     // you dont get ts fella
+        Console.WriteLine("Drag and drop files into this window, remember this is in HUGE development");
+
+        string input = Console.ReadLine();
+
+       if (string.IsNullOrWhiteSpace(input))
+       {
+           Console.WriteLine("No files detected. Returning to the menu.");
+           return;
+       }
+
+      string[] files = input.Split(new[] { '"' }, StringSplitOptions.RemoveEmptyEntries);
+
+      Console.WriteLine("Files detected: INVALID");
+
+      Console.WriteLine("Processing Failed. Most Likely A Steam Issue. Press any key to return to the menu.");
+
+      Console.ReadKey();
     }
+
 
     static async Task SteamAppIdTool()
     {
@@ -88,113 +86,86 @@ class Program
 
         Console.Clear();
 
-        Console.WriteLine("Welcome to the Steam App ID Tool!");
-        Console.WriteLine("Enter a Steam App ID or URL (or type 'exit' to quit):");
+      Console.WriteLine("Manifest & Lua Generator (ALPHA MAY NOT WORK)");
+        Console.WriteLine("------------------------------------");
+        Console.WriteLine("Enter your APP ID or URL:");
 
-        while (true)
+        string input = Console.ReadLine()?.Trim();
+        if (string.IsNullOrEmpty(input))
         {
-            Console.Write("Input: ");
-            string input = Console.ReadLine()?.Trim();
-
-            if (string.IsNullOrEmpty(input))
-            {
-                Console.WriteLine("[Error] Input cannot be empty.");
-                continue;
-            }
-
-            if (input.ToLower() == "exit")
-            {
-                Console.WriteLine("Exiting the application. Goodbye!");
-                break;
-            }
-
-            string appId = ExtractAppId(input);
-
-            if (string.IsNullOrEmpty(appId))
-            {
-                Console.WriteLine("[Error] Invalid URL or App ID.");
-                continue;
-            }
-
-            Console.WriteLine($"[Information] Finding App ID: {appId}");
-            await FetchAppDetails(appId);
+            Console.WriteLine("[Error] Input cannot be empty.");
+            return;
         }
+
+        string appId = ExtractAppId(input);
+        if (string.IsNullOrEmpty(appId))
+        {
+            Console.WriteLine("[Error] Invalid APP ID or URL.");
+            return;
+        }
+
+        Console.WriteLine($"[Information] Validating APP ID: {appId}");
+
+        Console.WriteLine("[Information] Validating CAPTCHA...");
+        string captchaToken = await SimulateCaptchaAsync(); 
+
+        if (string.IsNullOrEmpty(captchaToken))
+        {
+            Console.WriteLine("[Error] CAPTCHA validation failed.");
+            return;
+        }
+
+        Console.WriteLine("[Information] Sending request to generate manifest...");
+        string result = await FetchAppDataAsync(appId, captchaToken);
+
+        if (string.IsNullOrEmpty(result))
+        {
+            Console.WriteLine("[Error] Failed to fetch data.");
+        }
+        else
+        {
+            Console.WriteLine($"[Result] {result}");
+        }
+
     }
 
-    static string ExtractAppId(string input)
+    private static string ExtractAppId(string input)
     {
-        if (Regex.IsMatch(input, @"^\d+$"))
+        if (long.TryParse(input, out _))
         {
             return input;
         }
 
-        var match = Regex.Match(input, @"(?:app\/|agecheck\/app\/)(\d+)");
-        return match.Success ? match.Groups[1].Value : null;
+        var appIdMatch = System.Text.RegularExpressions.Regex.Match(input, @"(?:app\/|agecheck\/app\/)(\d+)");
+        return appIdMatch.Success ? appIdMatch.Groups[1].Value : null;
+    }
+    private static async Task<string> SimulateCaptchaAsync()
+    {
+        await Task.Delay(1000); 
+        return "6LdOQoUqAAAAALl8JR66xmOfCfeFdZpK-qZk9nD4"; 
     }
 
-    static async Task FetchAppDetails(string appId)
+    private static async Task<string> FetchAppDataAsync(string appId, string captchaToken)
     {
-        using (HttpClient client = new HttpClient())
+        try
         {
-            try
+            var requestUrl = $"{ApiBaseUrl}/get-appid?appId={appId}&token={captchaToken}";
+            var response = await client.GetAsync(requestUrl);
+
+            if (response.IsSuccessStatusCode)
             {
-                string apiUrl = $"https://vinn-web-tools-dandys-projects-bb4af0ab.vercel.app/get-appid?appid={appId}";
-                HttpResponseMessage response = await client.GetAsync(apiUrl);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    Console.WriteLine($"[Error] Failed to fetch data. HTTP Status: {response.StatusCode}");
-                    return;
-                }
-
-                string result = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"[Result] {result}");
-
-                if (result.StartsWith("Successfully generated APP ID: "))
-                {
-                    string branchName = result.Replace("Successfully generated APP ID: ", "").Trim();
-
-                    Console.WriteLine($"[Information] Preparing download for branch: {branchName}");
-                    string downloadUrl = await FetchDownloadUrl(branchName);
-
-                    if (!string.IsNullOrEmpty(downloadUrl))
-                    {
-                        Console.WriteLine($"[Download] URL: {downloadUrl}");
-                    }
-                }
+                return await response.Content.ReadAsStringAsync();
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine($"[Error] {ex.Message}");
+                Console.WriteLine($"[Error] API returned {response.StatusCode}: {response.ReasonPhrase}");
             }
         }
-    }
-
-    static async Task<string> FetchDownloadUrl(string branchName)
-    {
-        using (HttpClient client = new HttpClient())
+        catch (Exception ex)
         {
-            try
-            {
-                string downloadApiUrl = $"https://vinn-web-tools-dandys-projects-bb4af0ab.vercel.app/download?appid={branchName}";
-                HttpResponseMessage response = await client.GetAsync(downloadApiUrl);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    Console.WriteLine($"[Error] Failed to fetch download URL. HTTP Status: {response.StatusCode}");
-                    return null;
-                }
-
-                string jsonResult = await response.Content.ReadAsStringAsync();
-                dynamic resultData = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonResult);
-
-                return resultData?.url;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[Error] {ex.Message}");
-                return null;
-            }
+            Console.WriteLine($"[Error] {ex.Message}");
         }
+
+        return null;
     }
 }
